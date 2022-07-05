@@ -1,7 +1,7 @@
 //HTML DOM part
 
 // Get the GitHub username input form
-const githubForm = document.getElementById("githubForm");
+const gitHubForm = document.getElementById("gitHubForm");
 
 // Listen for submissions on GitHub username input form
 gitHubForm.addEventListener("submit", (e) => {
