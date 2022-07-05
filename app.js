@@ -1,6 +1,26 @@
+//HTML DOM part
+
+// Get the GitHub username input form
+const githubForm = document.getElementById("githubForm");
+
+// Listen for submissions on GitHub username input form
+gitHubForm.addEventListener("submit", (e) => {
+  // Prevent default form submission action
+  e.preventDefault();
+
+  // Get the GitHub username input field on the DOM
+  let usernameInput = document.getElementById("usernameInput");
+
+  // Get the value of the GitHub username input field
+  let gitHubUsername = usernameInput.value;
+
+  // Run GitHub API function, passing in the GitHub username
+  requestUserRepos(gitHubUsername);
+});
+
 // API function wrapper
 function requestUserRepos(username) {
-  // create new XMLHttpRequest object
+  // Create new XMLHttpRequest object
   const xhr = new XMLHttpRequest();
 
   // GitHub endpoint, dynamically passing in specified username
@@ -16,28 +36,29 @@ function requestUserRepos(username) {
     // Parse API data into JSON
     const data = JSON.parse(this.response);
 
-    // Log the response
-    console.log(data);
-
     // Loop over each object in data array
     for (let i in data) {
-      // Log the repo name
-      console.log("Repo:", data[i].name);
+      // Get the ul with id of of userRepos
+      let ul = document.getElementById("userRepos");
 
-      // Log the repo description
-      console.log("Description:", data[i].description);
+      // Create variable that will create li's to be added to ul
+      let li = document.createElement("li");
 
-      // Log the repo url
-      console.log("URL:", data[i].html_url);
+      // Add Bootstrap list item class to each li
+      li.classList.add("list-group-item");
 
-      // Add a separator between each repo
-      console.log("=========================");
+      // Create the html markup for each li
+      li.innerHTML = `
+                <p><strong>Repo:</strong> ${data[i].name}</p>
+                <p><strong>Description:</strong> ${data[i].description}</p>
+                <p><strong>URL:</strong> <a href="${data[i].html_url}">${data[i].html_url}</a></p>
+            `;
+
+      // Append each li to the ul
+      ul.appendChild(li);
     }
   };
 
   // Send the request to the server
   xhr.send();
 }
-
-// Call function passing in 'facebook' as GitHub username
-requestUserRepos("facebook");
